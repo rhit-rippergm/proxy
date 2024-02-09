@@ -29,10 +29,11 @@ app.post('/forward', async (req, res) => {
     console.log('forward');
 
     request({
-      url: "https://script.google.com/macros/s/AKfycbwNGWlAHjrRDIalKta8AA8fD5eKFIm1ABQmJsZu61bxLk_ZZ98ZUPf4f3tbivRGfGZb/exec",
+      url: "https://script.google.com/macros/s/AKfycbyfd9DBcMh3qk-FdnNIIId8OWDpGjEnBkastqXKCYKf1eg4-salatc2xUPL3_d2IYiL/exec",
       method: "POST",
       json: true,   // <--Very important!!!
-      body: JSON.stringify(tempBody)
+      //body: JSON.stringify(tempBody)
+      body: req.body
   }, function (error, response, body){
       console.log(response);
       res.status(200).send(response.statusText);
