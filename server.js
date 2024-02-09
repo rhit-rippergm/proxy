@@ -2,9 +2,10 @@ const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+var request = require('request');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 
 // Use CORS middleware to allow all origins
 app.use(cors());
@@ -26,24 +27,37 @@ app.use(bodyParser.json());
 // Forward route
 app.post('/forward', async (req, res) => {
     console.log('forward');
-  try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxyK5947bvaShC7cDTRbASy74myyB6KK4nMYEFUt0590cnd7I4lKodFrN2uAZzEkYUo/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(req.body),
-    body: JSON.stringify(tempBody),
-    });
 
-    if (!response.ok) {
-      throw new Error(`Error from the forwarded API: ${response.statusText}`);
-    }
+    request({
+      url: "https://script.google.com/macros/s/AKfycbwNGWlAHjrRDIalKta8AA8fD5eKFIm1ABQmJsZu61bxLk_ZZ98ZUPf4f3tbivRGfGZb/exec",
+      method: "POST",
+      json: true,   // <--Very important!!!
+      body: JSON.stringify(tempBody)
+  }, function (error, response, body){
+      console.log(response);
+      res.status(200).send(response.statusText);
+  });
 
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
+
+//   try {
+//     const response = await fetch('https://script.google.com/macros/s/AKfycby5EsXGGs_jLvefEuP1Vry_uBcbWcPd7E8ls1JAbEYd_WMAk7fmIg6uAVcSklYPLHKE/exec', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json'},
+//     //   body: JSON.stringify(req.body),
+//     body: JSON.stringify(tempBody),
+//     });
+
+//     // if (!response.ok) {
+//     //   throw new Error(`Error from the forwarded API: ${response.statusText}`);
+//     // }
+//     console.log(response);
+//     //const data = await response.json();
+//     //res.json(data);
+//     res.status(200).send(response.statusText);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Internal Server Error');
+//   }
 });
 
 // to allow specific origins
