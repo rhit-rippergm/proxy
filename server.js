@@ -10,32 +10,43 @@ const PORT = process.env.PORT || 3100;
 // Use CORS middleware to allow all origins
 app.use(cors());
 
-
 let tempBody = {
-      'name': "new",
-      'location': "newLoc",
-      'productType': "Type",
-      'dueDate': "date",
-      'phoneNumber': "number",
-      'productDesign': "design",
-      'color': "color",
-      'notes': "notes",
-    }
+  "name": "James",
+  "location": "Indy",
+  "productType":  "productType",
+  "dueDate": "dueDate",
+  "phoneNumber": "phoneNumber",
+  "productDesign": "productDesign",
+  "color": "color",
+  "notes": "notes",
+}
+
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
 // Forward route
 app.post('/forward', async (req, res) => {
-    console.log('forward');
-
+  console.log(JSON.stringify(req.body));
+    //console.log(req.body);
+    // let tempBody2 = {
+    //   "name": req.body.name,
+    //   "location": req.body.location,
+    //   "productType":  req.body.productType,
+    //   "dueDate": req.body.dueDate,
+    //   "phoneNumber": req.body.phoneNumber,
+    //   "productDesign": req.body.productDesign,
+    //   "color": req.body.color,
+    //   "notes": req.body.notes,
+    // }
+    // console.log(JSON.stringify(tempBody));
     request({
-      url: "https://script.google.com/macros/s/AKfycbyfd9DBcMh3qk-FdnNIIId8OWDpGjEnBkastqXKCYKf1eg4-salatc2xUPL3_d2IYiL/exec",
+      url: "https://script.google.com/macros/s/AKfycbzN-iU79KPma0vSThBy7-s4GuugRnaCu-jdVOl1q6zlJeHKe3gTNOyN0m_L3CVhVM5y/exec",
       method: "POST",
-      json: true,   // <--Very important!!!
+      json: true, 
       //body: JSON.stringify(tempBody)
       body: req.body
   }, function (error, response, body){
-      console.log(response);
+      console.log(response.body);
       res.status(200).send(response.statusText);
   });
 
